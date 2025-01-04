@@ -1,0 +1,20 @@
+# PHP 8.2を使用
+FROM php:8.2-fpm
+
+# 必要な拡張モジュールのインストール
+RUN docker-php-ext-install pdo pdo_mysql
+
+# 作業ディレクトリの設定
+WORKDIR /var/www
+
+# ソースコードをコンテナにコピー
+COPY . .
+
+# Composerをインストール
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Composerの依存関係インストール
+RUN composer install
+
+# PHP-FPMを実行
+CMD ["php-fpm"]
